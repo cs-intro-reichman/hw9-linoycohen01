@@ -148,7 +148,7 @@ public class LinkedList {
 	 */
 	public MemoryBlock getBlock(int index) {
 		if (index < 0 || index >= size) {
-            throw new IllegalArgumentException("index is out of range");
+            throw new IllegalArgumentException("index must be between 0 and size");
         }
         Node node = getNode(index);
         return node.block;
@@ -241,8 +241,12 @@ public class LinkedList {
 	 *         if the given memory block is not in this list
 	 */
 	public void remove(MemoryBlock block) {
-		//// Write your code here
-	}	
+			int index = indexOf(block);
+			if (index == -1) {
+				throw new IllegalArgumentException("block not found in this list");
+			}
+			remove(index);
+		}	
 
 	/**
 	 * Returns an iterator over this list, starting with the first element.
