@@ -58,23 +58,23 @@ public class MemorySpace {
 	 * @return the base address of the allocated block, or -1 if unable to allocate
 	 */
 	public int malloc(int length) {		
-		Node current = freeList.getFirst();
-		Node match = null;
+		Node current = this.freeList.getFirst();
+		Node equal = null;
 		while (current != null){
 			if (current.block.length >= length){
-				match = current;
+				equal = current;
 				break;
 			}
 			current = current.next;
 		}
-		if (match != null){
-			MemoryBlock toAlock = new MemoryBlock(match.block.baseAddress, length);
-			allocatedList.addLast(toAlock);
-			match.block.length -= length;
-			int address = match.block.baseAddress;
-			match.block.baseAddress += length;
-			if(match.block.length == 0){
-				freeList.remove(match);
+		if (equal != null){
+			MemoryBlock aloc = new MemoryBlock(equal.block.baseAddress, length);
+			this.allocatedList.addLast(aloc);
+			equal.block.length -= length;
+			int address = equal.block.baseAddress;
+			equal.block.baseAddress += length;
+			if(equal.block.length == 0){
+				freeList.remove(equal);
 			}
 			return address;
 			}
@@ -91,7 +91,8 @@ public class MemorySpace {
 	 *            the starting address of the block to freeList
 	 */
 	public void free(int address) {
-		if(this.freeList.getSize() == 1 && this.freeList.getFirst().block.baseAddress == 0 && this.freeList.getFirst().block.length == 100) {
+		if(this.freeList.getSize() == 1 && this.freeList.getFirst().block.baseAddress == 0 
+											&& this.freeList.getFirst().block.length == 100) {
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
 		}
@@ -128,20 +129,26 @@ public class MemorySpace {
 	public void defrag() {
 		/// TODO: Implement defrag test
 		//// Write your code here
-		if (this.freeList == null || this.freeList.getSize() <=1) return;
-        else{
-        Node current = this.freeList.getFirst();
-        while (current != null && current.next != null) {
-            MemoryBlock currentBlock = current.block;
-            MemoryBlock nextBlock = current.next.block;
-
-            if (currentBlock.baseAddress + currentBlock.length == nextBlock.baseAddress) {
-                currentBlock.length += nextBlock.length;
-                freeList.remove(current.next); 
-            } else {
-                current = current.next;
-            }
-        }
-		}
+			if (this.freeList == null || this.freeList.getSize() <= 1) {
+				return;
+			}
+			boolean isMerged = false;
+			while (!isMerged){
+			Node current = this.freeList.getFirst();
+		
+			while (current != null && current.next != null) {
+				MemoryBlock currentBlock = current.block;
+				MemoryBlock nextBlock = current.next.block;
+		
+					if (currentBlock.baseAddress + currentBlock.length == nextBlock.baseAddress) {
+						currentBlock.length += nextBlock.length;
+						freeList.remove(current.next);
+						isMerged = true;
+					} else {
+						current = current.next;
+					}
+				}
+			
+		}}
+		
 	}
-}
