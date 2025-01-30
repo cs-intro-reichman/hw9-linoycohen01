@@ -91,7 +91,25 @@ public class MemorySpace {
 	 *            the starting address of the block to freeList
 	 */
 	public void free(int address) {
-		//// Write your code here
+		if(freeList.getSize() == 1 && freeList.getFirst().block.baseAddress == 0 && freeList.getFirst().block.length == 100) {
+			throw new IllegalArgumentException(
+					"index must be between 0 and size");
+		}
+		   	Node current = allocatedList.getNode(0);
+			Node match = null;
+			while (current != null) {	
+				if (current.block.baseAddress == address){
+					match = current;
+					break;
+				}
+				current = current.next;
+			}
+			if (match == null) {
+				return;
+			} else {
+				freeList.addLast(match.block);
+				allocatedList.remove(match.block);
+			}
 	}
 	
 	/**
@@ -110,5 +128,23 @@ public class MemorySpace {
 	public void defrag() {
 		/// TODO: Implement defrag test
 		//// Write your code here
+		if (freeList == null){
+			return;
+		} 	else {
+			Node current = freeList.getFirst();
+			freeList.sort();;
+		while (current != null && current.next != null) {
+			MemoryBlock currentBlock = current.block;
+			MemoryBlock nextBlock = current.next.block;
+	
+			if (currentBlock.baseAddress + currentBlock.length == nextBlock.baseAddress) {
+				currentBlock.length += nextBlock.length;
+				freeList.remove(current.next);
+			} else {
+				current = current.next;
+			}
+		}
+		} 
+	
 	}
 }
