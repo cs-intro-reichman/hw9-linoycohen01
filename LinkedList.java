@@ -131,6 +131,9 @@ public class LinkedList {
 		Node newNode = new Node(block);
         newNode.next = this.first;
         this.first = newNode;
+		if (last == null) {
+            last = newNode;
+        }
         size++;
 	}
 
@@ -144,8 +147,11 @@ public class LinkedList {
 	 *         if index is negative or greater than or equal to size
 	 */
 	public MemoryBlock getBlock(int index) {
-		//// Replace the following statement with your code
-		return null;
+		if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("index is out of range");
+        }
+        Node node = getNode(index);
+        return node.block;
 	}	
 
 	/**
@@ -156,8 +162,16 @@ public class LinkedList {
 	 * @return the index of the block, or -1 if the block is not in this list
 	 */
 	public int indexOf(MemoryBlock block) {
-		//// Replace the following statement with your code
-		return -1;
+		Node current = first;
+        int index = 0;
+        while (current != null) {
+            if (current.block.equals(block)) {
+                return index;
+            }
+            current = current.next;
+            index++;
+        }
+        return -1;
 	}
 
 	/**
@@ -167,8 +181,29 @@ public class LinkedList {
 	 *        the node that will be removed from this list
 	 */
 	public void remove(Node node) {
-		//// Write your code here
-	}
+		if (node == null) return;
+        if (this.first == node) {
+            first = first.next;
+            if (first == null) {
+                last = null;
+            }
+            size--;
+            return;
+		}
+			Node current = this.first;
+			while (current != null && current.next != node) {
+				current = current.next;
+			}
+			if (current == null) {
+				return;
+			}
+			current.next = node.next;
+			if (node == last) {
+				last = current;
+			}
+			size--;
+		}
+	
 
 	/**
 	 * Removes from this list the node which is located at the given index.
@@ -178,7 +213,24 @@ public class LinkedList {
 	 *         if index is negative or greater than or equal to size
 	 */
 	public void remove(int index) {
-		//// Write your code here
+		if (index < 0 || index >= size) {
+            throw new IllegalArgumentException("index is out of range");
+        }
+        if (index == 0) {
+            this.first = this.first.next;
+            if (first == null) {
+                last = null;
+            }
+            size--;
+            return;
+        }
+        Node prev = getNode(index - 1);
+        Node toRemove = prev.next; 
+        prev.next = toRemove.next;
+        if (toRemove == last) {
+            last = prev;
+        }
+        size--;
 	}
 
 	/**
