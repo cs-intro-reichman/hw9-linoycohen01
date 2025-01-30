@@ -214,7 +214,7 @@ public class LinkedList {
 	 */
 	public void remove(int index) {
 		if (index < 0 || index >= size) {
-            throw new IllegalArgumentException("index is out of range");
+            throw new IllegalArgumentException("index must be between 0 and size");
         }
         if (index == 0) {
             this.first = this.first.next;
