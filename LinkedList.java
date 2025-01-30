@@ -270,4 +270,17 @@ public class LinkedList {
 		}
 		return s;
 		}
+
+	public void sort(){
+		for (int i = 0; i < this.size - 1; i++){
+			for (int j = 0; j < size - i - 1; j++){
+				Node current = getNode(j);
+				if (current.block.baseAddress > current.next.block.baseAddress){
+					MemoryBlock swap = current.block;
+					current.block = current.next.block;
+					current.next.block = swap;
+				}
+			}
+		}
+	}
 }

@@ -132,21 +132,19 @@ public class MemorySpace {
 			if (this.freeList == null || this.freeList.getSize() <= 1) {
 				return;
 			}
-			boolean isMerged = false;
-			while (!isMerged){
-			Node current = this.freeList.getFirst();
-		
-			while (current != null && current.next != null) {
+			else {
+				Node current = this.freeList.getFirst();
+				freeList.sort();
+			while (current.next != null) {
 				MemoryBlock currentBlock = current.block;
 				MemoryBlock nextBlock = current.next.block;
 		
-					if (currentBlock.baseAddress + currentBlock.length == nextBlock.baseAddress) {
-						currentBlock.length += nextBlock.length;
-						freeList.remove(current.next);
-						isMerged = true;
-					} else {
-						current = current.next;
-					}
+				if (currentBlock.baseAddress + currentBlock.length == nextBlock.baseAddress) {
+					currentBlock.length += nextBlock.length;
+					freeList.remove(current.next);
+				} else {
+					current = current.next;
+				}
 				}
 			
 		}}
