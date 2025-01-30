@@ -91,24 +91,24 @@ public class MemorySpace {
 	 *            the starting address of the block to freeList
 	 */
 	public void free(int address) {
-		if(freeList.getSize() == 1 && freeList.getFirst().block.baseAddress == 0 && freeList.getFirst().block.length == 100) {
+		if(this.freeList.getSize() == 1 && this.freeList.getFirst().block.baseAddress == 0 && this.freeList.getFirst().block.length == 100) {
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
 		}
-		   	Node current = allocatedList.getNode(0);
-			Node match = null;
+		   	Node current = this.allocatedList.getNode(0);
+			Node equal = null;
 			while (current != null) {	
 				if (current.block.baseAddress == address){
-					match = current;
+					equal = current;
 					break;
 				}
 				current = current.next;
 			}
-			if (match == null) {
+			if (equal == null) {
 				return;
 			} else {
-				freeList.addLast(match.block);
-				allocatedList.remove(match.block);
+				freeList.addLast(equal.block);
+				allocatedList.remove(equal.block);
 			}
 	}
 	
@@ -128,11 +128,9 @@ public class MemorySpace {
 	public void defrag() {
 		/// TODO: Implement defrag test
 		//// Write your code here
-		if (freeList.getSize() <= 1) {
-            return;
-        }
-
-        Node current = freeList.getFirst();
+		if (this.freeList == null || this.freeList.getSize() <=1) return;
+        else{
+        Node current = this.freeList.getFirst();
         while (current != null && current.next != null) {
             MemoryBlock currentBlock = current.block;
             MemoryBlock nextBlock = current.next.block;
@@ -144,6 +142,6 @@ public class MemorySpace {
                 current = current.next;
             }
         }
-	
+		}
 	}
 }
