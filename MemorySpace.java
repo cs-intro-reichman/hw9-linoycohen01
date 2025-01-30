@@ -132,7 +132,6 @@ public class MemorySpace {
 			return;
 		} 	else {
 			Node current = freeList.getFirst();
-			freeList.sort();;
 		while (current != null && current.next != null) {
 			MemoryBlock currentBlock = current.block;
 			MemoryBlock nextBlock = current.next.block;

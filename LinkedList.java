@@ -81,7 +81,23 @@ public class LinkedList {
 	 *         if index is negative or greater than the list's size
 	 */
 	public void add(int index, MemoryBlock block) {
-		//// Write your code here
+		if (index < 0 || index > size) {
+			throw new IllegalArgumentException(
+					"index must be between 0 and size");
+		}
+		if (index == 0) {
+            addFirst(block);
+            return;
+        }
+        if (index == size) {
+            addLast(block);
+            return;
+        }
+        Node prev = getNode(index - 1);
+        Node newNode = new Node(block);
+        newNode.next = prev.next;
+        prev.next = newNode;
+        size++;
 	}
 
 	/**
@@ -92,8 +108,17 @@ public class LinkedList {
 	 *        the given memory block
 	 */
 	public void addLast(MemoryBlock block) {
-		//// Write your code here
-	}
+		Node newNode = new Node(block);
+        if (first == null) {
+            first = newNode;
+            last = newNode;
+        } else {
+            last.next = newNode; 
+            last = newNode; 
+        }
+        this.size++;
+    }
+	
 	
 	/**
 	 * Creates a new node that points to the given memory block, and adds it 
@@ -103,7 +128,10 @@ public class LinkedList {
 	 *        the given memory block
 	 */
 	public void addFirst(MemoryBlock block) {
-		//// Write your code here
+		Node newNode = new Node(block);
+        newNode.next = this.first;
+        this.first = newNode;
+        size++;
 	}
 
 	/**
