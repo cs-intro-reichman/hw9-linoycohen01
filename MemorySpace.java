@@ -128,22 +128,22 @@ public class MemorySpace {
 	public void defrag() {
 		/// TODO: Implement defrag test
 		//// Write your code here
-		if (freeList == null){
-			return;
-		} 	else {
-			Node current = freeList.getFirst();
-		while (current != null && current.next != null) {
-			MemoryBlock currentBlock = current.block;
-			MemoryBlock nextBlock = current.next.block;
-	
-			if (currentBlock.baseAddress + currentBlock.length == nextBlock.baseAddress) {
-				currentBlock.length += nextBlock.length;
-				freeList.remove(current.next);
-			} else {
-				current = current.next;
-			}
-		}
-		} 
+		if (freeList.getSize() <= 1) {
+            return;
+        }
+
+        Node current = freeList.getFirst();
+        while (current != null && current.next != null) {
+            MemoryBlock currentBlock = current.block;
+            MemoryBlock nextBlock = current.next.block;
+
+            if (currentBlock.baseAddress + currentBlock.length == nextBlock.baseAddress) {
+                currentBlock.length += nextBlock.length;
+                freeList.remove(current.next); 
+            } else {
+                current = current.next;
+            }
+        }
 	
 	}
 }
