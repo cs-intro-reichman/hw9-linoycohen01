@@ -54,8 +54,11 @@ public class LinkedList {
 			throw new IllegalArgumentException(
 					"index must be between 0 and size");
 		}
-		//// Replace the following statement with your code
-		return null;
+		Node current = this.getFirst();
+		for (int i = 0; i < index; i++){
+			current = current.next;
+		}
+		return current;
 	}
 	
 	/**
@@ -172,7 +175,12 @@ public class LinkedList {
 	 * A textual representation of this list, for debugging.
 	 */
 	public String toString() {
-		//// Replace the following statement with your code
-		return "";
-	}
+		String s = "";
+		Node current = first;
+		while (current != null) {
+		s = s + current.block + " ";
+		current = current.next;
+		}
+		return s;
+		}
 }
